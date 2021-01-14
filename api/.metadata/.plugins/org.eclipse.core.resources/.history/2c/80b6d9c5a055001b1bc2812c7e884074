@@ -1,0 +1,27 @@
+package domain.repository;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import domain.entity.Users;
+
+public interface UsersRepository extends JpaRepository<Users, Integer> {
+
+    Optional<Users> findByLogin(String login);
+    
+    @Query(value = " select * from cliente c where c.firstName like '%:firstName%' ", nativeQuery = true)
+    List<Users> encontrarPorNome( @Param("firstName") String nome );
+
+    @Query(" delete from Cliente c where c.firstName =:firstName ")
+    @Modifying
+    void deleteByNome(String firstName);
+
+    boolean existsByNome(String firstName);
+
+    
+}

@@ -1,0 +1,16 @@
+package rest.dto;
+
+import javax.persistence.Column;
+
+public class CarsDTO {
+	
+	
+	private int year;
+	
+	private String licensePlate;
+	
+	private String model;
+	
+	private String color;
+
+}

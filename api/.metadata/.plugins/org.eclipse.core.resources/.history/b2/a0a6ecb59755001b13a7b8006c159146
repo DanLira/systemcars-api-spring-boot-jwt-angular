@@ -1,0 +1,8 @@
+package exception;
+
+public class PasswordInvalidaException extends RuntimeException{
+	
+	public PasswordInvalidaException() {
+        super("Senha inválida");
+    }
+}

@@ -1,0 +1,122 @@
+package domain.entity;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "TB_USERS")
+public class Users {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
+	@Column(name = "firstName")
+	private String firstName;
+	
+	@Column(name = "lastName")
+	private String lastName;
+	
+	@Column(name = "email")
+	private String email;
+	
+	@Column(name = "birthday")
+	private Date birthday;
+	
+	@Column(name = "login")
+	private String login;
+	
+	@Column(name = "password")
+	private String password;
+	
+	@Column(name = "phone")
+	private String phone;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	
+	@JoinColumn(name = "cars")
+	private List<Cars> cars = new ArrayList<>();
+	
+	
+	
+	public Users(Long id, String firstName, String lastName, String email, Date birthday, String login, String password,
+			String phone, List<Cars> cars) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.birthday = birthday;
+		this.login = login;
+		this.password = password;
+		this.phone = phone;
+		this.cars = cars;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public Date getBirthday() {
+		return birthday;
+	}
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
+	public String getLogin() {
+		return login;
+	}
+	public void setLogin(String login) {
+		this.login = login;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public List<Cars> getCars() {
+		return cars;
+	}
+	public void setCars(List<Cars> cars) {
+		this.cars = cars;
+	}
+	
+
+
+}

@@ -1,0 +1,76 @@
+package rest.controller;
+
+import java.util.List;
+
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.server.ResponseStatusException;
+
+import domain.entity.Users;
+
+public class CarsController {
+	
+	
+	
+	private CarsRepository carsRepository
+	
+	
+	
+	@GetMapping("{id}")
+    public Users getUserById(@PathVariable Integer id ){
+        return carsRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Carro não encontrado"));
+    }
+
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Integer id ){
+    	carsRepository.findById(id)
+                .map( user -> {
+                	usersRepository.delete(user );
+                    return user;
+                })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Carro não encontrado") );
+
+    }
+
+    @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void update( @PathVariable Integer id,
+                        @RequestBody @Validated Users user ){
+    	carsRepository
+                .findById(id)
+                .map(userExistente -> {
+                    user.setId(userExistente.getId());
+                    usersRepository.save(user);
+                    return userExistente;
+                }).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "Carro não encontrado") );
+    }
+
+    @GetMapping
+    public List<Users> find(Users filtro ){
+        ExampleMatcher matcher = ExampleMatcher
+                                    .matching()
+                                    .withIgnoreCase()
+                                    .withStringMatcher(
+                                            ExampleMatcher.StringMatcher.CONTAINING );
+
+        Example example = Example.of(filtro, matcher);
+        return carsRepository.findAll(example);
+    }
+
+}

@@ -1,0 +1,142 @@
+<section>
+    <div class="container-fluid">
+      <div class="col-12">
+        <mat-card class="mat-card-padrao">
+          <div class="row">
+            <div class="col-12">
+              <div >
+                <h1 class="title-card">Cadastro de Usuários</h1>
+                <h1 class="idPadrao">ID do Usuário: {{formsRegister.value.idUser}}</h1>
+              </div>
+              <form [formGroup]="formsRegister" class="row">
+                
+                  <mat-form-field class="col-sm-4 col-xs-12">
+                    <mat-label>Primeiro Nome</mat-label>
+                  <input matInput placeholder="Promeiro Nome" required
+                  formControlName="firstName" value={{formsRegister.value.firstName}} >
+                </mat-form-field>
+                
+                  <mat-form-field class="col-sm-4 col-xs-12">
+                    <mat-label>Ultimo Nome</mat-label>
+                  <input matInput placeholder="Ultimo Nome" required
+                  formControlName="lastName" value={{formsRegister.value.lastName}} >
+                </mat-form-field>
+
+                <mat-form-field class="col-4">
+                  <mat-label>E-Mail</mat-label>
+                  <input matInput placeholder="E-Mail" pattern="^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$"
+                  formControlName="email" value={{formsRegister.value.email}} >
+                </mat-form-field>
+
+                <mat-form-field class="col-4">
+                  <input matInput readonly [matDatepicker]="picker" placeholder="Data de nascimento"
+                   formControlName="birthday" value={{formsRegister.value.Birthday}}>
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>          
+                </mat-form-field>
+                  
+                  <mat-form-field class="col-sm-2 col-xs-12">
+                      <mat-label>Login</mat-label>
+                    <input matInput placeholder="Login" required
+                    formControlName="login" value={{formsRegister.value.login}} >
+                  </mat-form-field>
+
+                  <mat-form-field class="col-sm-2 col-xs-12">
+                    <input matInput  placeholder="Senha" formControlName="password" [type]="hide ? 'text' : 'password'">
+                    <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                    <mat-icon>{{hide ? 'visibility' : 'visibility_off'}}</mat-icon>
+                    </button>
+                  </mat-form-field>
+
+                  <mat-form-field class="col-2">
+                    <mat-label>Telefone</mat-label>
+                    <input matInput placeholder="Telefone"
+                    formControlName="phone" value={{formsRegister.value.phone}} >
+                  </mat-form-field>
+
+                  <mat-form-field class="col-2">
+                    <mat-label>Carro</mat-label>
+                    <mat-select formControlName="idFornecedorPJ" value={{formsRegister.value.cars}}>
+                      <mat-option>Selecione</mat-option>
+                      <mat-option [value]="fpj.idFornecedorPJ" *ngFor="let fpj of fornecedoresPj">{{fpj.nomeFantasia}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+              </form>
+            </div>
+          </div>
+          <div class="d-flex col-12">
+              <div class="offset-md-10">
+                  <button mat-button class="col-12" (click)="limpar()">Limpar</button>
+              </div>
+            <div class="ml-auto">
+              <button mat-button class="col-12" [disabled]="!formsRegister.valid" (click)="salvarUsuario()"><mat-icon>save</mat-icon> Salvar</button>
+            </div>
+          </div> 
+        </mat-card>
+      </div>
+        <div class="col-12 mt-2">
+          <mat-card class="mat-card-list">
+              <mat-card-title>Lista de Usuários</mat-card-title> 
+              <mat-accordion>
+                <mat-expansion-panel>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      Filtro de Usuário
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <form [formGroup]="filterFormUsuario" class="row">
+                      <mat-form-field class="col-xs-12 col-md-4">
+                          <mat-label>Nome do Usuário</mat-label>
+                      <input matInput placeholder="Nome" formControlName="nomeFilterCtrl">
+                    </mat-form-field>
+                    <div class="col-xs-12 col-md-1">
+                      <button mat-button (click)="filterTabelaUsuario()" class="mt-2"><mat-icon>search</mat-icon>Buscar</button>
+                    </div>
+                  </form>
+                </mat-expansion-panel>
+              </mat-accordion>
+                <div class="mat-elevation-z8 mt-2">
+                  <table mat-table [dataSource]="dataSource">
+                    <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef id="name"> Nome </th>
+                      <td mat-cell *matCellDef="let element" > {{ element.firstName }} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="email">
+                      <th mat-header-cell *matHeaderCellDef id="email"> E-mail </th>
+                      <td mat-cell *matCellDef="let element" > {{ element.email }} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="phone">
+                      <th mat-header-cell *matHeaderCellDef id="phone"> Telefone </th>
+                      <td mat-cell *matCellDef="let element" > {{ element.phone }} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="action">
+                      <th mat-header-cell *matHeaderCellDef id="action"> Ações </th>
+                      <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                          <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                          <button mat-menu-item (click)="getRowTableUsuario(element)">
+                              <mat-icon>edit</mat-icon>
+                              <span>Editar</span>
+                          </button>
+                          <button mat-menu-item (click)="excluirUsuario(element.idUser)">
+                            <mat-icon>delete</mat-icon>
+                            <span>Deletar</span>
+                          </button>
+                        </mat-menu>
+                      </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+                  <mat-paginator #MatPaginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator> 
+                </div>
+            </mat-card>
+      </div>
+    </div>
+  </section>
+  
+  

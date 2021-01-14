@@ -1,0 +1,59 @@
+package domain.entity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.*;
+
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
+@Table(name = "TB_USERS")
+public class Users {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
+	@Column(name = "firstName")
+	private String firstName;
+	
+	@Column(name = "lastName")
+	private String lastName;
+	
+	@Column(name = "email")
+	private String email;
+	
+	@Column(name = "birthday")
+	private Date birthday;
+	
+	@Column(name = "login")
+	private String login;
+	
+	@Column(name = "password")
+	private String password;
+	
+	@Column(name = "phone")
+	private String phone;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	
+	@JoinColumn(name = "cars")
+	private List<Cars> cars = new ArrayList<>();
+	
+	
+	
+
+	
+	
+
+
+}
