@@ -51,4 +51,5 @@
     <fullyQualifiedTypeName name="security.jwt.JwtAuthFilter"/>
     <fullyQualifiedTypeName name="domain.repository.CarsRepository"/>
     <fullyQualifiedTypeName name="domain.entity.Cars"/>
+    <fullyQualifiedTypeName name="javax.validation.Valid"/>
 </qualifiedTypeNameHistroy>

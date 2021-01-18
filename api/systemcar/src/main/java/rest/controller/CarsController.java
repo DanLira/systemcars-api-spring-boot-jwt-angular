@@ -2,10 +2,11 @@ package rest.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -69,7 +70,7 @@ public class CarsController {
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update( @PathVariable Integer id,
-                        @RequestBody @Validated Cars car ){
+                        @RequestBody @Valid Cars car ){
     	carsRepository
                 .findById(id)
                 .map(carExistente -> {
@@ -80,7 +81,7 @@ public class CarsController {
                     "Carro não encontrado") );
     }
 
-    @GetMapping
+    @GetMapping("/cars")
     public List<Cars> find(Cars filtro ){
         ExampleMatcher matcher = ExampleMatcher
                                     .matching()

@@ -3,7 +3,6 @@ package rest.controller;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +27,8 @@ import service.impl.UserServiceImpl;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
@@ -50,7 +51,7 @@ public class UsersController {
 
 	@PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
-    public Users save(@RequestBody @Validated Users user ){
+    public Users save(@RequestBody @Valid Users user ){
         String passwordCriptografada = passwordEncoder.encode(user.getPassword());
         user.setPassword(passwordCriptografada);
         return userService.save(user);
@@ -98,7 +99,7 @@ public class UsersController {
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update( @PathVariable Integer id,
-                        @RequestBody @Validated Users user ){
+                        @RequestBody @Valid Users user ){
     	usersRepository
                 .findById(id)
                 .map(userExistente -> {
